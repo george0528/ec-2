@@ -4,9 +4,8 @@
 ```mermaid
 classDiagram
   class Cart {
-    +cartId: String
+    +cartId: CartId
     +items: List<CartItem>
-    +totalPrice: number
     -pendingEvents: List<CartEvent>
     +addItem(item: CartItem): Cart
     +removeItem(itemId: String): Cart
@@ -18,30 +17,30 @@ classDiagram
   }
 
   class CartItem {
-    +itemId: String
-    +quantity: int
-    +price: number
+    +itemId: ItemId
+    +quantity: Quantity
+    +price: Price
   }
 
   class CartEvent {
     <<interface>>
-    +cartId: String
+    +cartId: CartId
     +occurredOn: DateTime
   }
 
   class ItemAddedEvent {
-    +itemId: String
-    +price: number
-    +quantity: int
+    +itemId: CartId
+    +price: Price
+    +quantity: Quantity
   }
 
   class ItemRemovedEvent {
-    +itemId: String
+    +itemId: ItemId
   }
 
   class ItemQuantityUpdatedEvent {
-    +itemId: String
-    +quantity: int
+    +itemId: ItemId
+    +quantity: Quantity
   }
 
   CartEvent <|-- ItemAddedEvent
