@@ -29,7 +29,7 @@ classDiagram
   }
 
   class ItemAddedEvent {
-    +itemId: CartId
+    +itemId: ItemId
     +price: Price
     +quantity: Quantity
   }
