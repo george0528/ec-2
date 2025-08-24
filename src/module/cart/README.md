@@ -6,14 +6,13 @@ classDiagram
   class Cart {
     +cartId: CartId
     +items: List<CartItem>
-    -pendingEvents: List<CartEvent>
+    +pendingEvents: List<CartDomainEvent>
     +addItem(item: CartItem): Cart
-    +removeItem(itemId: String): Cart
-    +updateItemQuantity(itemId: String, quantity: int): Cart
-    +replay(events: CartEvent...) Cart
-    +calculateTotal() number
-    +getPendingEvents(): List<CartEvent>
-    +clearPendingEvents(): void
+    +removeItem(itemId: ItemId): Cart
+    +updateItemQuantity(itemId: ItemId, quantity: Quantity): Cart
+    +replay(events: CartDomainEvent[]) Cart
+    +totalPrice(): Price
+    +pendingEvents(): List<CartDomainEvent>
   }
 
   class CartItem {
@@ -26,6 +25,7 @@ classDiagram
     <<interface>>
     +cartId: CartId
     +occurredOn: DateTime
+    +type: CartEventType
   }
 
   class ItemAddedEvent {
