@@ -52,6 +52,21 @@ importers:
         specifier: ^5
         version: 5.8.3
 
+  src/module/cart:
+    dependencies:
+      '@ec/common':
+        specifier: workspace:*
+        version: link:../common
+      typescript:
+        specifier: ^5
+        version: 5.8.3
+
+  src/module/common:
+    dependencies:
+      typescript:
+        specifier: ^5
+        version: 5.8.3
+
 packages:
 
   '@alloc/quick-lru@5.2.0':

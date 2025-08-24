@@ -1,0 +1,10 @@
+{
+  "name": "@ec/cart",
+  "version": "1.0.0",
+  "dependencies": {
+    "@ec/common": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
