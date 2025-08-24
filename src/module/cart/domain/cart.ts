@@ -110,11 +110,12 @@ export class Cart {
             price: event.price,
             quantity: event.quantity,
           },
-        ]);
+        ], this.pendingEvents);
       case CartEventType.ITEM_REMOVED:
         return new Cart(
           this.cartId,
           this.items.filter((i) => !i.itemId.equals(event.itemId)),
+          this.pendingEvents,
         );
       case CartEventType.ITEM_QUANTITY_UPDATED:
         return new Cart(
@@ -128,6 +129,7 @@ export class Cart {
             }
             return i;
           }),
+          this.pendingEvents,
         );
       default: {
         assertNever(event);
