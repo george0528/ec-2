@@ -1,10 +1,10 @@
 // Domain types
-import { CartId, ItemId, Price, Quantity, OccurredOn } from './value-object';
+import { CartId, ItemId, Price, Quantity, OccurredOn } from "./value-object";
 
 export enum CartEventType {
-  ITEM_ADDED = 'ITEM_ADDED',
-  ITEM_REMOVED = 'ITEM_REMOVED',
-  ITEM_QUANTITY_UPDATED = 'ITEM_QUANTITY_UPDATED',
+  ITEM_ADDED = "ITEM_ADDED",
+  ITEM_REMOVED = "ITEM_REMOVED",
+  ITEM_QUANTITY_UPDATED = "ITEM_QUANTITY_UPDATED",
 }
 
 abstract class CartEvent {
@@ -12,8 +12,7 @@ abstract class CartEvent {
   protected constructor(
     public cartId: CartId,
     public occurredOn: OccurredOn,
-  ) {
-  }
+  ) {}
 }
 
 export class ItemAddedEvent extends CartEvent {
@@ -24,12 +23,18 @@ export class ItemAddedEvent extends CartEvent {
     occurredOn: OccurredOn,
     public readonly itemId: ItemId,
     public readonly price: Price,
-    public readonly quantity: Quantity
+    public readonly quantity: Quantity,
   ) {
     super(cartId, occurredOn);
   }
 
-  static create(cartId: CartId, occurredOn: OccurredOn, itemId: ItemId, price: Price, quantity: Quantity): ItemAddedEvent {
+  static create(
+    cartId: CartId,
+    occurredOn: OccurredOn,
+    itemId: ItemId,
+    price: Price,
+    quantity: Quantity,
+  ): ItemAddedEvent {
     return new ItemAddedEvent(cartId, occurredOn, itemId, price, quantity);
   }
 }
@@ -39,12 +44,16 @@ export class ItemRemovedEvent extends CartEvent {
   private constructor(
     cartId: CartId,
     occurredOn: OccurredOn,
-    public readonly itemId: ItemId
+    public readonly itemId: ItemId,
   ) {
     super(cartId, occurredOn);
   }
 
-  static create(cartId: CartId, occurredOn: OccurredOn, itemId: ItemId): ItemRemovedEvent {
+  static create(
+    cartId: CartId,
+    occurredOn: OccurredOn,
+    itemId: ItemId,
+  ): ItemRemovedEvent {
     return new ItemRemovedEvent(cartId, occurredOn, itemId);
   }
 }
@@ -55,12 +64,17 @@ export class ItemQuantityUpdatedEvent extends CartEvent {
     cartId: CartId,
     occurredOn: OccurredOn,
     public readonly itemId: ItemId,
-    public readonly quantity: Quantity
+    public readonly quantity: Quantity,
   ) {
     super(cartId, occurredOn);
   }
 
-  static create(cartId: CartId, occurredOn: OccurredOn, itemId: ItemId, quantity: Quantity): ItemQuantityUpdatedEvent {
+  static create(
+    cartId: CartId,
+    occurredOn: OccurredOn,
+    itemId: ItemId,
+    quantity: Quantity,
+  ): ItemQuantityUpdatedEvent {
     return new ItemQuantityUpdatedEvent(cartId, occurredOn, itemId, quantity);
   }
 }

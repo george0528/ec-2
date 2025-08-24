@@ -1,12 +1,15 @@
-import { ZodError } from 'zod';
+import { ZodError } from "zod";
 
 /**
  * ドメイン例外の基底クラス
  */
 export class DomainException extends Error {
-  constructor(message: string, public readonly cause?: Error) {
+  constructor(
+    message: string,
+    public readonly cause?: Error,
+  ) {
     super(message);
-    this.name = 'DomainException';
+    this.name = "DomainException";
   }
 }
 
@@ -15,19 +18,24 @@ export class DomainException extends Error {
  * Zodのバリデーションエラーをラップする
  */
 export class ValidationException extends DomainException {
-  constructor(message: string, public readonly zodError: ZodError) {
+  constructor(
+    message: string,
+    public readonly zodError: ZodError,
+  ) {
     super(message, zodError);
-    this.name = 'ValidationException';
+    this.name = "ValidationException";
   }
 
   /**
    * ZodError から ValidationException を作成する
    */
   static fromZodError(zodError: ZodError): ValidationException {
-    const messages = zodError.issues.map((issue) => {
-      const path = issue.path?.length ? issue.path.join('.') + ': ' : '';
-      return `${path}${issue.message}`;
-    }).join(', ');
+    const messages = zodError.issues
+      .map((issue) => {
+        const path = issue.path?.length ? issue.path.join(".") + ": " : "";
+        return `${path}${issue.message}`;
+      })
+      .join(", ");
     return new ValidationException(messages, zodError);
   }
 }

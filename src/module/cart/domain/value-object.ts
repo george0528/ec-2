@@ -1,14 +1,19 @@
-import { v4 as uuidv4 } from 'uuid';
-import {createDateSchema, createIdSchema, createPositiveNumberSchema, ValidationException} from '@ec/common';
+import { v4 as uuidv4 } from "uuid";
+import {
+  createDateSchema,
+  createIdSchema,
+  createPositiveNumberSchema,
+  ValidationException,
+} from "@ec/common";
 import { ZodError } from "zod";
 
 /** カートID値オブジェクト */
 export class CartId {
   private constructor(public readonly value: string) {
     try {
-      createIdSchema('CartId').parse(value);
+      createIdSchema("CartId").parse(value);
     } catch (error) {
-      if(error instanceof ZodError) {
+      if (error instanceof ZodError) {
         throw ValidationException.fromZodError(error);
       }
       throw error;
@@ -34,7 +39,7 @@ export class ItemId {
     try {
       createIdSchema("ItemId").parse(value);
     } catch (error) {
-      if(error instanceof ZodError) {
+      if (error instanceof ZodError) {
         throw ValidationException.fromZodError(error);
       }
       throw error;
@@ -58,9 +63,9 @@ export class ItemId {
 export class Price {
   private constructor(public readonly value: number) {
     try {
-      createPositiveNumberSchema('Price').parse(value);
+      createPositiveNumberSchema("Price").parse(value);
     } catch (error) {
-      if(error instanceof ZodError) {
+      if (error instanceof ZodError) {
         throw ValidationException.fromZodError(error);
       }
       throw error;
@@ -88,9 +93,9 @@ export class Price {
 export class Quantity {
   private constructor(public readonly value: number) {
     try {
-      createPositiveNumberSchema('Quantity').parse(value);
+      createPositiveNumberSchema("Quantity").parse(value);
     } catch (error) {
-      if(error instanceof ZodError) {
+      if (error instanceof ZodError) {
         throw ValidationException.fromZodError(error);
       }
       throw error;
@@ -114,9 +119,9 @@ export class Quantity {
 export class OccurredOn {
   private constructor(public readonly value: Date) {
     try {
-      createDateSchema('OccurredOn').parse(value);
+      createDateSchema("OccurredOn").parse(value);
     } catch (error) {
-      if(error instanceof ZodError) {
+      if (error instanceof ZodError) {
         throw ValidationException.fromZodError(error);
       }
       throw error;

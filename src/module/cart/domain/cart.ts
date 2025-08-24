@@ -4,9 +4,9 @@ import {
   ItemRemovedEvent,
   ItemQuantityUpdatedEvent,
   CartEventType,
-} from './event';
-import { CartId, ItemId, Price, Quantity, OccurredOn } from './value-object';
-import {assertNever} from "@/module/common/assert";
+} from "./event";
+import { CartId, ItemId, Price, Quantity, OccurredOn } from "./value-object";
+import { assertNever } from "@/module/common/assert";
 
 export interface CartItem {
   itemId: ItemId;
@@ -23,9 +23,8 @@ export class Cart {
   private constructor(
     public readonly cartId: CartId,
     private items: ReadonlyArray<CartItem> = [],
-    public readonly pendingEvents: ReadonlyArray<CartDomainEvent> = []
-  ) {
-  }
+    public readonly pendingEvents: ReadonlyArray<CartDomainEvent> = [],
+  ) {}
 
   get totalPrice(): number {
     return this.calculateTotal();
@@ -41,7 +40,7 @@ export class Cart {
       OccurredOn.now(),
       item.itemId,
       item.price,
-      item.quantity
+      item.quantity,
     );
 
     return this.applyEvent(event).addPendingEvent(event);
@@ -57,7 +56,7 @@ export class Cart {
     const event = ItemRemovedEvent.create(
       this.cartId,
       OccurredOn.now(),
-      itemId
+      itemId,
     );
 
     return this.applyEvent(event).addPendingEvent(event);
@@ -75,7 +74,7 @@ export class Cart {
       this.cartId,
       OccurredOn.now(),
       itemId,
-      quantity
+      quantity,
     );
 
     return this.applyEvent(event).addPendingEvent(event);
@@ -91,7 +90,10 @@ export class Cart {
   }
 
   private calculateTotal(): number {
-    return this.items.reduce((sum, i) => sum + i.price.value * i.quantity.value, 0);
+    return this.items.reduce(
+      (sum, i) => sum + i.price.value * i.quantity.value,
+      0,
+    );
   }
 
   private addPendingEvent(event: CartDomainEvent): Cart {
@@ -110,17 +112,23 @@ export class Cart {
           },
         ]);
       case CartEventType.ITEM_REMOVED:
-        return new Cart(this.cartId, this.items.filter(i => !i.itemId.equals(event.itemId)));
+        return new Cart(
+          this.cartId,
+          this.items.filter((i) => !i.itemId.equals(event.itemId)),
+        );
       case CartEventType.ITEM_QUANTITY_UPDATED:
-        return new Cart(this.cartId, this.items.map(i => {
-          if (i.itemId.equals(event.itemId)) {
-            return {
-              ...i,
-              quantity: event.quantity,
-            };
-          }
-          return i;
-        }));
+        return new Cart(
+          this.cartId,
+          this.items.map((i) => {
+            if (i.itemId.equals(event.itemId)) {
+              return {
+                ...i,
+                quantity: event.quantity,
+              };
+            }
+            return i;
+          }),
+        );
       default: {
         assertNever(event);
       }
