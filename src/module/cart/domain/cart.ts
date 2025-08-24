@@ -98,7 +98,6 @@ export class Cart {
   }
 
   private applyEvent(event: CartDomainEvent): Cart {
-    // イベント種別はプロパティ構造で判定（type フィールド等は追加しない）
     switch (event.eventType) {
       case CartEventType.ITEM_ADDED:
         return new Cart(this.cartId, [
