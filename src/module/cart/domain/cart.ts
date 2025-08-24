@@ -23,12 +23,16 @@ export class Cart {
   private constructor(
     public readonly cartId: CartId,
     private items: ReadonlyArray<CartItem> = [],
-    public readonly pendingEvents: CartDomainEvent[] = []
+    public readonly pendingEvents: ReadonlyArray<CartDomainEvent> = []
   ) {
   }
 
   get totalPrice(): number {
     return this.calculateTotal();
+  }
+
+  static create(items: CartItem[]): Cart {
+    return new Cart(CartId.create(), items);
   }
 
   addItem(item: CartItem): Cart {
@@ -40,8 +44,7 @@ export class Cart {
       item.quantity
     );
 
-    this.pendingEvents.push(event);
-    return this.applyEvent(event);
+    return this.applyEvent(event).addPendingEvent(event);
   }
 
   removeItem(itemId: ItemId): Cart {
@@ -57,8 +60,7 @@ export class Cart {
       itemId
     );
 
-    this.pendingEvents.push(event);
-    return this.applyEvent(event);
+    return this.applyEvent(event).addPendingEvent(event);
   }
 
   updateItemQuantity(itemId: ItemId, quantity: Quantity): Cart {
@@ -76,8 +78,7 @@ export class Cart {
       quantity
     );
 
-    this.pendingEvents.push(event);
-    return this.applyEvent(event);
+    return this.applyEvent(event).addPendingEvent(event);
   }
 
   replay(events: CartDomainEvent[]): Cart {
@@ -93,8 +94,8 @@ export class Cart {
     return this.items.reduce((sum, i) => sum + i.price.value * i.quantity.value, 0);
   }
 
-  static create(items: CartItem[]): Cart {
-    return new Cart(CartId.create(), items);
+  private addPendingEvent(event: CartDomainEvent): Cart {
+    return new Cart(this.cartId, this.items, [...this.pendingEvents, event]);
   }
 
   private applyEvent(event: CartDomainEvent): Cart {
